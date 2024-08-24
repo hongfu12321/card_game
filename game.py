@@ -132,3 +132,22 @@ if __name__ == "__main__":
     name_lst = ['austin', 'cindy', 'fu', 'Kevin']
     game = Game(name_lst)
     game.start()
+
+## Example output:
+# player :  austin
+# score  :  4
+# history:  ['7C', '13D', '11C', '9C', '8H', '8S', '5S', '13S', '9H', '8C', '11D', '3H', '6S']
+
+# player :  cindy
+# score  :  2
+# history:  ['3C', '5D', '12D', '1C', '7D', '2D', '12H', '12S', '4D', '9D', '1H', '10H', '2H']
+
+# player :  fu
+# score  :  4
+# history:  ['5H', '7H', '6D', '8D', '13H', '11S', '4H', '1S', '6C', '10C', '2C', '7S', '10S']
+
+# player :  Kevin
+# score  :  3
+# history:  ['4C', '5C', '10D', '9S', '4S', '3S', '6H', '12C', '2S', '3D', '11H', '13C', '1D']
+
+# Winners: ['austin', 'fu']; Score board: [4, 2, 4, 3]
