@@ -45,10 +45,7 @@ class Card:
         elif self.rank > other.rank:
             return False
         else:
-            if suits[self.suit] < suits[other.suit]:
-                return True
-            else:
-                return False
+            return suits[self.suit] < suits[other.suit]
             
     def __eq__(self, other):
         pass
@@ -99,7 +96,7 @@ class Game:
         full_deck = Deck()
         players_len = len(players)
         desks = full_deck.prepare_decks(players_len)
-        
+
         self.players: list[Player] = []
         for i in range(players_len):
             self.players.append(Player(name_lst[i], desks[i]))
