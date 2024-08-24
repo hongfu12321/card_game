@@ -1,4 +1,5 @@
 '''
+Question: 
 Here is the description of the game simulation.
 
 this is a two player card game
@@ -25,28 +26,23 @@ It's considered a simulation because the players don't have any choice, dont wor
 import random
 
 class Card:
+    suits_order = {"Clubs": 0, "Diamonds": 1, "Hearts": 2, "Spades": 3}
+
     def __init__(self, suit, rank):
         self.suit = suit
-        self.rank = rank
+        self.rank = int(rank)  # Ensure rank is an integer for proper comparison
     
     def __str__(self):
         return f"{self.rank}{self.suit[0]}"
     
     def __lt__(self, other):
-        suits = {
-          "Spades": 3, 
-          "Hearts": 2, 
-          "Diamonds": 1, 
-          "Clubs" :0 
-        }
-
         if self.rank < other.rank:
             return True
         elif self.rank > other.rank:
             return False
         else:
-            return suits[self.suit] < suits[other.suit]
-            
+            return Card.suits_order[self.suit] < Card.suits_order[other.suit]
+    
     def __eq__(self, other):
         pass
 
@@ -58,8 +54,8 @@ class Deck:
         self.deck = [Card(suit, rank) for suit in Deck.suits for rank in Deck.ranks]
         random.shuffle(self.deck)
 
-    # Separate desk to player_count decks.
     def prepare_decks(self, player_count: int):
+        # Distribute the deck as evenly as possible among the players
         decks = [[] for _ in range(player_count)]
         while self.deck:
             for i in range(player_count):
@@ -72,10 +68,6 @@ class Deck:
     def __len__(self):
         return len(self.deck)
 
-    def print_deck(self):
-        for card in self.deck:
-            print(str(card))
-
 class Player:
     def __init__(self, name: str, deck: list[Card]):
         self.name = name
@@ -86,20 +78,17 @@ class Player:
     
     # We record the card in history and use current_card to compare with others
     def deal_from_deck(self):
-        card = self.deck.pop() if self.deck else None
-        self.current_card = card
-        self.history.append(card)
-        return card
+        if self.deck:
+            self.current_card = self.deck.pop()
+            self.history.append(self.current_card)
+            return self.current_card
+        return None
 
 class Game:
     def __init__(self, players: list[str]):
         full_deck = Deck()
-        players_len = len(players)
-        desks = full_deck.prepare_decks(players_len)
-
-        self.players: list[Player] = []
-        for i in range(players_len):
-            self.players.append(Player(name_lst[i], desks[i]))
+        player_decks = full_deck.prepare_decks(len(players))
+        self.players = [Player(name, player_decks[i]) for i, name in enumerate(players)]
 
     def start(self):
         while self.fight():
@@ -108,9 +97,7 @@ class Game:
             
     def fight(self):
         cards = [player.deal_from_deck() for player in self.players]
-
-        # If no card available, return and break the while loop.
-        if None in cards:
+        if None in cards: # If any player has no cards left, end the game
             return False
 
         max_player = max(self.players, key= lambda player: player.current_card)
@@ -120,14 +107,8 @@ class Game:
     def game_winner(self):
         self.current_status()
 
-        highest_score = 0
-        winners = []
-        for player in self.players:
-            if player.score > highest_score:
-                winners = [player.name]
-                highest_score = player.score
-            elif player.score == highest_score:
-                winners.append(player.name)
+        highest_score = max(player.score for player in self.players)
+        winners = [player.name for player in self.players if player.score == highest_score]
         
         if len(winners) == len(self.players):
             print("Draw!!")
