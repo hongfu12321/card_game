@@ -1,3 +1,27 @@
+'''
+Here is the description of the game simulation.
+
+this is a two player card game
+the game starts with a deck of cards
+the cards are dealt out to both players
+on each turn:
+both players turn over their top-most card
+the player with the higher valued card takes the cards and puts them in their scoring pile (scoring 1 point per card)
+this continues until the players have no cards left
+the player with the highest score wins
+It's considered a simulation because the players don't have any choice, dont worry about inputHere is the description of the game simulation.
+
+this is a two player card game
+the game starts with a deck of cards
+the cards are dealt out to both players
+on each turn:
+both players turn over their top-most card
+the player with the higher valued card takes the cards and puts them in their scoring pile (scoring 1 point per card)
+this continues until the players have no cards left
+the player with the highest score wins
+It's considered a simulation because the players don't have any choice, dont worry about input
+'''
+
 import random
 
 class Card:
@@ -8,7 +32,6 @@ class Card:
     def __str__(self):
         return f"{self.rank}{self.suit[0]}"
     
-    # Compare card using __lt__ and __eq__
     def __lt__(self, other):
         suits = {
           "Spades": 3, 
@@ -74,7 +97,6 @@ class Player:
         self.history.append(card)
         return card
 
-
 class Game:
     def __init__(self, players: list[str]):
         players_len = len(players)
@@ -87,19 +109,17 @@ class Game:
     def start(self):
         while self.fight():
             pass
-        self.game_winner()
-        
+        self.game_winner() 
             
     def fight(self):
         cards = [player.deal_from_deck() for player in self.players]
 
-        # if no card available, return
+        # If no card available, return and break the while loop.
         if None in cards:
             return False
 
         max_player = max(self.players, key= lambda player: player.current_card)
         max_player.score += 1
-        # print(max_player.name, [str(card) for card in cards])
         return True
 
     def game_winner(self):
