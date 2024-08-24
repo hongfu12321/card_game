@@ -59,9 +59,6 @@ class Deck:
 
     def __init__(self):
         self.deck = [Card(suit, rank) for suit in Deck.suits for rank in Deck.ranks]
-        self.shuffle()
-
-    def shuffle(self):
         random.shuffle(self.deck)
 
     # Separate desk to player_count decks.
@@ -99,9 +96,10 @@ class Player:
 
 class Game:
     def __init__(self, players: list[str]):
+        full_deck = Deck()
         players_len = len(players)
-        self.deck = Deck()
-        desks = self.deck.prepare_decks(players_len)
+        desks = full_deck.prepare_decks(players_len)
+        
         self.players: list[Player] = []
         for i in range(players_len):
             self.players.append(Player(name_lst[i], desks[i]))
